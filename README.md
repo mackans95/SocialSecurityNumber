@@ -1,7 +1,7 @@
 # Social Security Number
 
 A console application that lets a user enter a social security number
-and thenn returns the age and gender of the individual.
+and then returns the age and gender of the individual.
 
 ## Getting started
 
