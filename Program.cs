@@ -8,9 +8,18 @@ namespace SocialSecurityNumber
     {
         static void Main(string[] args)
         {
-            Console.Write("Enter Social Security Number (YYMMDD-XXXX) please: ");
 
-            string socialSecurityNumber = Console.ReadLine();
+            string socialSecurityNumber;
+            if (args.Length > 0)
+            {
+                Console.WriteLine($"You provided: {args[0]}");
+                socialSecurityNumber = args[0];
+            }
+            else
+            {
+                Console.WriteLine("Enter Social Security Number (YYMMDD-XXXX) please: ");
+                socialSecurityNumber = Console.ReadLine();
+            }
             
             int genderNumber = int.Parse(socialSecurityNumber.Substring(socialSecurityNumber.Length - 2, 1));
 
