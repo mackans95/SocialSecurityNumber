@@ -25,7 +25,15 @@ namespace SocialSecurityNumber
 
             bool isFemale = genderNumber % 2 == 0;
 
-            string gender = isFemale ? "Female" : "Male;";
+            string gender = isFemale ? "Female" : "Male";
+
+            while (socialSecurityNumber.Length == 13)
+            {
+                Console.WriteLine("Invalid input, please try again: ");
+                socialSecurityNumber = null;
+                socialSecurityNumber = Console.ReadLine();
+
+            }
             
             DateTime birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 6), "yyMMdd", CultureInfo.InvariantCulture);
 
