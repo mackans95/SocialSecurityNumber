@@ -27,7 +27,7 @@ namespace SocialSecurityNumber
 
             string gender = isFemale ? "Female" : "Male";
 
-            while (socialSecurityNumber.Length == 13)
+            while (socialSecurityNumber.Length != 11)
             {
                 Console.WriteLine("Invalid input, please try again: ");
                 socialSecurityNumber = null;
