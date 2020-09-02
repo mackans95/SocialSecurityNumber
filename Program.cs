@@ -12,12 +12,12 @@ namespace SocialSecurityNumber
             string socialSecurityNumber;
             if (args.Length > 0)
             {
-                Console.WriteLine($"You provided: {args[0]}");
+                Console.Write($"You provided: {args[0]}");
                 socialSecurityNumber = args[0];
             }
             else
             {
-                Console.WriteLine("Enter Social Security Number (YYMMDD-XXXX) please: ");
+                Console.Write("Enter Social Security Number (YYMMDD-XXXX) please: ");
                 socialSecurityNumber = Console.ReadLine();
             }
             
@@ -29,7 +29,7 @@ namespace SocialSecurityNumber
 
             while (socialSecurityNumber.Length != 11)
             {
-                Console.WriteLine("Invalid input, please try again: ");
+                Console.Write("Invalid input, please try again: ");
                 socialSecurityNumber = null;
                 socialSecurityNumber = Console.ReadLine();
 
