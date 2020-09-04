@@ -4,7 +4,7 @@ using System.Transactions;
 
 namespace SocialSecurityNumber
 {
-    
+
     class Program
     {
         static void Main(string[] args)
@@ -30,7 +30,7 @@ namespace SocialSecurityNumber
                 Console.Write("Enter Social Security Number (YYYYMMDD-XXXX) please: ");
                 socialSecurityNumber = Console.ReadLine();
             }
-            
+
             int genderNumber = int.Parse(socialSecurityNumber.Substring(socialSecurityNumber.Length - 2, 1));
             bool isFemale = genderNumber % 2 == 0;
             string gender = isFemale ? "Female" : "Male";
@@ -49,36 +49,44 @@ namespace SocialSecurityNumber
                 age--;
             }
 
+            const int silentGenCutoff = 1945;
+            const int babyBoomerCutoff = 1964;
+            const int generationXCutoff = 1980;
+            const int millenialCutoff = 1996;
+            const int generationZCutoff = 2012;
+
             string generation;
-            if (age >= 75)
+            if (birthDate.Year >= 1977 && birthDate.Year <= 1983)
             {
-                generation = "Silent Generation";
-            }
-            else if (age >= 56 && age <= 74)
-            {
-                generation = "Baby Boomer";
-            }
-            else if (age >= 40 && age <= 55)
-            {
-                generation = "Generation X";
-            }
-            else if (age >= 24 && age <= 39)
-            {
-                generation = "Millenial";
+                generation = "Xennial";
             }
             else
             {
-                generation = "Generation Z";
+                generation = (birthDate.Year <= silentGenCutoff ? "isSilentGen" :
+                              birthDate.Year <= babyBoomerCutoff ? "isBabyBoomer" :
+                              birthDate.Year <= generationXCutoff ? "isGenX" :
+                              birthDate.Year <= millenialCutoff ? "isMillenial" :
+                              birthDate.Year <= generationZCutoff ? "isGenZ" : default) switch
+                {
+                    "isSilentGen" => "Silent Generation",
+                    "isBabyBoomer" => "Baby Boomer",
+                    "isGenX" => "Generation X",
+                    "isMillenial" => "Millenial",
+                    "isGenZ" => "Generation Z",
+                    _ => "Generation Alpha",
+                };
             }
+            // -25 in the rows below indicates the amount of spaces to print before the other variables
             Console.Clear();
-            Console.WriteLine($"Name:                   {firstName} {lastName}");
-            Console.WriteLine($"Social Security Number: {socialSecurityNumber}");
-            Console.WriteLine($"Gender:                 {gender}");
-            Console.WriteLine($"Age:                    {age}");
-            Console.WriteLine($"Generation:             {generation}");
+            Console.WriteLine($"{"Name: ",-25}{firstName} {lastName}");
+            Console.WriteLine($"{"Social Security Number: ",-25}{socialSecurityNumber}");
+            Console.WriteLine($"{"Gender: ",-25}{gender}");
+            Console.WriteLine($"{"Age: ",-25}{age}");
+            Console.WriteLine($"{"Generation: ",-25}{generation}");
             Console.ReadKey();
-        }    
         }
     }
+}
+    
 
 
