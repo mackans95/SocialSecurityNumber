@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using System.Transactions;
+using System.Text.RegularExpressions;
+
 
 namespace SocialSecurityNumber
 {
@@ -12,6 +13,7 @@ namespace SocialSecurityNumber
             string socialSecurityNumber;
             string firstName;
             string lastName;
+            string generation;
 
             if (args.Length > 0)
             {
@@ -31,31 +33,40 @@ namespace SocialSecurityNumber
                 socialSecurityNumber = Console.ReadLine();
             }
 
-            int genderNumber = int.Parse(socialSecurityNumber.Substring(socialSecurityNumber.Length - 2, 1));
-            bool isFemale = genderNumber % 2 == 0;
-            string gender = isFemale ? "Female" : "Male";
-
-            while (socialSecurityNumber.Length != 13)
+            var genderNumber = int.Parse(socialSecurityNumber.Substring(socialSecurityNumber.Length - 2, 1));
+            var isFemale = genderNumber % 2 == 0;
+            var gender = isFemale ? "Female" : "Male";
+            
+            //This regex below will now make sure only SSN:s that match it (8 digits with or without 
+            //a hyphen, then the last 4) will work, all else is invalid
+            var ssnFormat = new Regex(@"^\d{8}[-\s]{0,1}\d{4}$");
+            var isNotCorrectFormat = !ssnFormat.IsMatch(socialSecurityNumber);
+            while (isNotCorrectFormat)
             {
-                Console.Write("Invalid SSN, please try again (YYYYMMDD-XXXX): ");
+                Console.Clear();
+                Console.Write("Invalid SSN format, please try again (YYYYMMDD-XXXX): ");
                 socialSecurityNumber = Console.ReadLine();
+
+                if (ssnFormat.IsMatch(socialSecurityNumber))
+                {
+                    break;
+                }
             }
 
-            DateTime birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
+            var birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
 
-            int age = DateTime.Now.Year - birthDate.Year;
+            var age = DateTime.Now.Year - birthDate.Year;
             if ((birthDate.Month > DateTime.Now.Month) || (birthDate.Month == DateTime.Now.Month && birthDate.Day > DateTime.Now.Day))
             {
                 age--;
             }
-
+            
             const int silentGenCutoff = 1945;
             const int babyBoomerCutoff = 1964;
             const int generationXCutoff = 1980;
             const int millenialCutoff = 1996;
             const int generationZCutoff = 2012;
 
-            string generation;
             if (birthDate.Year >= 1977 && birthDate.Year <= 1983)
             {
                 generation = "Xennial";
