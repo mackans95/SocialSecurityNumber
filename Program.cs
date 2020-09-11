@@ -33,10 +33,8 @@ namespace SocialSecurityNumber
                 socialSecurityNumber = Console.ReadLine();
             }
 
-            var genderNumber = int.Parse(socialSecurityNumber.Substring(socialSecurityNumber.Length - 2, 1));
-            var isFemale = genderNumber % 2 == 0;
-            var gender = isFemale ? "Female" : "Male";
-            
+            var gender = GetGender(socialSecurityNumber);
+
             //This regex below will now make sure only SSN:s that match it (8 digits with or without 
             //a hyphen, then the last 4) will work, all else is invalid
             var ssnFormat = new Regex(@"^\d{8}[-\s]{0,1}\d{4}$");
@@ -55,12 +53,8 @@ namespace SocialSecurityNumber
 
             var birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
 
-            var age = DateTime.Now.Year - birthDate.Year;
-            if ((birthDate.Month > DateTime.Now.Month) || (birthDate.Month == DateTime.Now.Month && birthDate.Day > DateTime.Now.Day))
-            {
-                age--;
-            }
-            
+            var age = CalculateAge(socialSecurityNumber);
+
             const int silentGenCutoff = 1945;
             const int babyBoomerCutoff = 1964;
             const int generationXCutoff = 1980;
@@ -95,6 +89,32 @@ namespace SocialSecurityNumber
             Console.WriteLine($"{"Age: ",-25}{age}");
             Console.WriteLine($"{"Generation: ",-25}{generation}");
             Console.ReadKey();
+        }
+
+        private static int CalculateAge(string socialSecurityNumber)
+        {
+            DateTime birthDate = DateTime.ParseExact(socialSecurityNumber.Substring(0, 8), "yyyyMMdd", CultureInfo.InvariantCulture);
+
+            var age = DateTime.Now.Year - birthDate.Year;
+
+            if ((birthDate.Month > DateTime.Now.Month) ||
+                (birthDate.Month == DateTime.Now.Month && birthDate.Day > DateTime.Now.Day))
+            {
+                age--;
+            }
+
+            return age;
+        }
+
+        private static string GetGender(string socialSecurityNumber)
+        {
+            var genderNumber = int.Parse(socialSecurityNumber.Substring(socialSecurityNumber.Length - 2, 1));
+
+            var isFemale = genderNumber % 2 == 0;
+            
+            var gender = isFemale ? "Female" : "Male";
+            
+            return gender;
         }
     }
 }
